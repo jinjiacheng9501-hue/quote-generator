@@ -1,0 +1,87 @@
+<div class="quote-paper">
+  <div class="quote-top">
+    <div class="quote-title-block">
+      <p class="eyebrow">商业报价单</p>
+      <h1>{{quoteTitle}}</h1>
+      <div class="quote-meta-inline">
+        <span>报价日期：{{quoteDate}}</span>
+        <span>供货日期：{{deliveryDate}}</span>
+      </div>
+    </div>
+    <div class="meta-box">
+      <div>
+        <span>未税金额</span>
+        <strong>{{pretaxTotal}}</strong>
+      </div>
+      <div>
+        <span>含税总金额</span>
+        <strong>{{grandTotal}}</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-grid">
+    <div class="info-card">
+      <h3>客户信息</h3>
+      <p><span>客户名称：</span>{{customerName}}</p>
+      <p><span>联系人：</span>{{customerContact}}</p>
+      <p><span>联系电话：</span>{{customerPhone}}</p>
+      <p><span>地址：</span>{{customerAddress}}</p>
+    </div>
+    <div class="info-card">
+      <h3>供货方信息</h3>
+      <p><span>公司名称：</span>{{supplierName}}</p>
+      <p><span>联系人：</span>{{supplierContact}}</p>
+      <p><span>联系电话：</span>{{supplierPhone}}</p>
+      <p><span>地址：</span>{{supplierAddress}}</p>
+    </div>
+  </div>
+
+  <table class="quote-table">
+    <thead>
+      <tr>
+        <th style="width:60px;">序号</th>
+        <th>产品名称</th>
+        <th style="width:90px; text-align:right;">数量</th>
+        <th style="width:90px;">单位</th>
+        <th style="width:130px; text-align:right;">单价（含税）</th>
+        <th style="width:140px; text-align:right;">含税金额</th>
+        <th>备注</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{tableRows}}
+    </tbody>
+  </table>
+
+  <div class="summary-grid">
+    <div class="summary-card">
+      <h3>金额汇总</h3>
+      <p><span>未税金额：</span>{{pretaxTotal}}</p>
+      <p><span>税率：</span>{{taxRateText}}</p>
+      <p><span>税额：</span>{{taxAmount}}</p>
+      <p><span>含税总金额：</span><strong>{{grandTotal}}</strong></p>
+    </div>
+    <div class="summary-card">
+      <h3>商务条款</h3>
+      <p><span>付款方式：</span>{{paymentMethod}}</p>
+      <p><span>报价有效期：</span>{{validityPeriod}}</p>
+      <p><span>交货方式：</span>{{deliveryMethod}}</p>
+      <p><span>备注条款：</span>{{remarks}}</p>
+    </div>
+  </div>
+
+  <div class="signature-grid">
+    <div class="signature-box seal-box">
+      <span>供货方签字 / 盖章</span>
+      <div class="seal-slot">
+        {{sealHtml}}
+      </div>
+    </div>
+    <div class="signature-box">
+      <span>客户确认</span>
+    </div>
+  </div>
+
+  <div class="quote-foot">报价单生成时间：{{generatedAt}}</div>
+</div>
