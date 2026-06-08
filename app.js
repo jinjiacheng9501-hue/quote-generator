@@ -1,6 +1,7 @@
 const STORAGE_KEYS = {
-  form: "quote-generator-form-v3",
-  template: "quote-generator-template-v3",
+  form: "quote-generator-form-v4",
+  template: "quote-generator-template-v4",
+  seal: "quote-generator-seal-v4",
 };
 
 const defaultTemplate = `
@@ -60,36 +61,36 @@ const defaultTemplate = `
     </tbody>
   </table>
 
-  <div class="summary-grid">
-    <div class="summary-card">
-      <h3>金额汇总</h3>
-      <p><span>未税金额：</span>{{pretaxTotal}}</p>
-      <p><span>税率：</span>{{taxRateText}}</p>
-      <p><span>税额：</span>{{taxAmount}}</p>
-      <p><span>含税总金额：</span><strong>{{grandTotal}}</strong></p>
-    </div>
-    <div class="summary-card">
-      <h3>商务条款</h3>
-      <p><span>付款方式：</span>{{paymentMethod}}</p>
-      <p><span>报价有效期：</span>{{validityPeriod}}</p>
-      <p><span>交货方式：</span>{{deliveryMethod}}</p>
-      <p><span>备注条款：</span>{{remarks}}</p>
-    </div>
-  </div>
-
-  <div class="signature-grid">
-    <div class="signature-box seal-box">
-      <span>供货方签字 / 盖章</span>
-      <div class="seal-slot">
-        {{sealHtml}}
+  <div class="bottom-section">
+    <div class="summary-grid">
+      <div class="summary-card">
+        <h3>金额汇总</h3>
+        <p><span>未税金额：</span>{{pretaxTotal}}</p>
+        <p><span>税率：</span>{{taxRateText}}</p>
+        <p><span>税额：</span>{{taxAmount}}</p>
+        <p><span>含税总金额：</span><strong>{{grandTotal}}</strong></p>
+      </div>
+      <div class="summary-card">
+        <h3>商务条款</h3>
+        <p><span>付款方式：</span>{{paymentMethod}}</p>
+        <p><span>报价有效期：</span>{{validityPeriod}}</p>
+        <p><span>交货方式：</span>{{deliveryMethod}}</p>
+        <p><span>备注条款：</span>{{remarks}}</p>
       </div>
     </div>
-    <div class="signature-box">
-      <span>客户确认</span>
-    </div>
-  </div>
 
-  <div class="quote-foot">报价单生成时间：{{generatedAt}}</div>
+    <div class="signature-grid">
+      <div class="signature-box seal-box">
+        <span>供货方签字 / 盖章</span>
+        <div class="seal-slot">{{sealHtml}}</div>
+      </div>
+      <div class="signature-box">
+        <span>客户确认</span>
+      </div>
+    </div>
+
+    <div class="quote-foot">报价单生成时间：{{generatedAt}}</div>
+  </div>
 </div>`;
 
 const els = {
@@ -178,9 +179,7 @@ function calculateLineTotal(qty, unitPrice) {
 
 function getTaxRateValue() {
   const preset = els.taxRatePreset.value;
-  if (preset === "custom") {
-    return Math.max(0, toNumber(els.taxRateCustom.value) / 100);
-  }
+  if (preset === "custom") return Math.max(0, toNumber(els.taxRateCustom.value) / 100);
   return Math.max(0, toNumber(preset));
 }
 
@@ -254,13 +253,13 @@ function getRowsData() {
 }
 
 function getSealHtml() {
-  const src = localStorage.getItem("quote-generator-seal-v3");
+  const src = localStorage.getItem(STORAGE_KEYS.seal);
   if (!src) return "";
   return `<img class="seal-image" src="${src}" alt="公司印章" />`;
 }
 
 function updateSealPreview() {
-  const src = localStorage.getItem("quote-generator-seal-v3");
+  const src = localStorage.getItem(STORAGE_KEYS.seal);
   if (src) {
     els.sealPreview.src = src;
     els.sealPreview.style.display = "block";
@@ -490,10 +489,8 @@ function attachFormListeners() {
 }
 
 function loadSeal() {
-  const src = localStorage.getItem("quote-generator-seal-v3");
-  if (src) {
-    els.sealPreview.src = src;
-  }
+  const src = localStorage.getItem(STORAGE_KEYS.seal);
+  if (src) els.sealPreview.src = src;
   updateSealPreview();
 }
 
@@ -564,7 +561,7 @@ els.sealFile.addEventListener("change", async () => {
   }
   const reader = new FileReader();
   reader.onload = () => {
-    localStorage.setItem("quote-generator-seal-v3", String(reader.result || ""));
+    localStorage.setItem(STORAGE_KEYS.seal, String(reader.result || ""));
     updateSealPreview();
     renderQuote();
   };
@@ -572,7 +569,7 @@ els.sealFile.addEventListener("change", async () => {
 });
 
 els.clearSealBtn.addEventListener("click", () => {
-  localStorage.removeItem("quote-generator-seal-v3");
+  localStorage.removeItem(STORAGE_KEYS.seal);
   els.sealFile.value = "";
   updateSealPreview();
   renderQuote();

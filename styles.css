@@ -694,8 +694,26 @@ textarea {
 }
 
 @media print {
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
+  html,
   body {
+    width: 210mm;
+    height: 297mm;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
     background: #fff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
   .hero,
@@ -707,12 +725,14 @@ textarea {
   }
 
   .page-shell {
-    width: 100%;
-    margin: 0;
+    width: 210mm;
+    margin: 0 auto;
   }
 
   .layout {
     display: block;
+    width: 210mm;
+    margin: 0;
   }
 
   .preview-panel {
@@ -734,15 +754,129 @@ textarea {
   }
 
   .quote-paper {
-    width: auto;
+    width: 210mm;
+    min-height: 0;
     margin: 0;
     border-radius: 0;
-    padding: 0;
+    padding: 8mm 10mm 8mm;
     box-shadow: none;
+    overflow: hidden;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    zoom: 0.98;
+    display: block;
   }
 
-  @page {
-    size: A4;
-    margin: 12mm;
+  .quote-top,
+  .info-grid,
+  .summary-grid,
+  .signature-grid,
+  .bottom-section,
+  .info-card,
+  .summary-card,
+  .signature-box {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .quote-top {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    justify-content: space-between !important;
+  }
+
+  .info-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    grid-auto-flow: row !important;
+  }
+
+  .summary-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    grid-auto-flow: row !important;
+  }
+
+  .signature-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    grid-auto-flow: row !important;
+  }
+
+  .bottom-section {
+    display: block !important;
+    margin-top: 10px;
+  }
+
+  .info-card,
+  .summary-card,
+  .signature-box {
+    min-width: 0 !important;
+  }
+
+  .quote-table {
+    margin-top: 6px;
+    table-layout: fixed;
+    width: 100%;
+  }
+
+  .quote-table thead {
+    display: table-header-group;
+  }
+
+  .quote-table tbody {
+    display: table-row-group;
+  }
+
+  .quote-table tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .quote-paper h1 {
+    font-size: 20pt;
+    margin-bottom: 6px;
+  }
+
+  .quote-meta-inline {
+    font-size: 10pt;
+    gap: 8px 14px;
+  }
+
+  .meta-box,
+  .info-card,
+  .summary-card,
+  .signature-box {
+    padding: 10px;
+  }
+
+  .info-grid,
+  .summary-grid,
+  .signature-grid {
+    margin-top: 10px;
+    gap: 10px;
+  }
+
+  .quote-table th,
+  .quote-table td {
+    padding: 6px 8px;
+    font-size: 9pt;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .quote-foot {
+    margin-top: 10px;
+    font-size: 10pt;
+  }
+
+  .seal-box {
+    min-height: 110px;
+  }
+
+  .seal-slot {
+    inset: 34px 10px 10px;
   }
 }
