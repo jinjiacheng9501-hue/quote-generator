@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   --bg: #f4f7fb;
   --panel: rgba(255, 255, 255, 0.92);
   --panel-border: #d7e0ea;
@@ -880,3 +880,4 @@ textarea {
     inset: 34px 10px 10px;
   }
 }
+
