@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>网页报价单生成器</title>
-  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
   <div class="page-shell">
@@ -36,31 +36,31 @@
           <div class="field-grid">
             <label class="field">
               <span>客户名称</span>
-              <input id="customerName" type="text" placeholder="例如：上海金晶科技有限公司" />
+              <input id="customerName" type="text" placeholder="例如：上海金晶科技有限公司">
             </label>
             <label class="field">
               <span>客户联系人</span>
-              <input id="customerContact" type="text" placeholder="例如：李经理" />
+              <input id="customerContact" type="text" placeholder="例如：李经理">
             </label>
             <label class="field">
               <span>客户联系电话</span>
-              <input id="customerPhone" type="text" placeholder="例如：13900000000" />
+              <input id="customerPhone" type="text" placeholder="例如：13900000000">
             </label>
             <label class="field">
               <span>客户地址</span>
-              <input id="customerAddress" type="text" placeholder="例如：上海市浦东新区..." />
+              <input id="customerAddress" type="text" placeholder="例如：上海市浦东新区...">
             </label>
             <label class="field">
               <span>报价日期</span>
-              <input id="quoteDate" type="date" />
+              <input id="quoteDate" type="date">
             </label>
             <label class="field">
               <span>供货日期</span>
-              <input id="deliveryDate" type="date" />
+              <input id="deliveryDate" type="date">
             </label>
             <label class="field">
               <span>报价有效期</span>
-              <input id="validityPeriod" type="text" placeholder="例如：报价有效期 7 天" />
+              <input id="validityPeriod" type="text" placeholder="例如：报价有效期 7 天">
             </label>
           </div>
         </div>
@@ -70,19 +70,19 @@
           <div class="field-grid">
             <label class="field">
               <span>供货方公司名称</span>
-              <input id="supplierName" type="text" />
+              <input id="supplierName" type="text" placeholder="例如：上海某某某科技有限公司">
             </label>
             <label class="field">
               <span>联系人</span>
-              <input id="supplierContact" type="text" />
+              <input id="supplierContact" type="text" placeholder="例如：张经理">
             </label>
             <label class="field">
               <span>联系电话</span>
-              <input id="supplierPhone" type="text" />
+              <input id="supplierPhone" type="text" placeholder="例如：1380000000">
             </label>
             <label class="field">
               <span>地址</span>
-              <input id="supplierAddress" type="text" />
+              <input id="supplierAddress" type="text" placeholder="例如：上海浦东新区">
             </label>
           </div>
         </div>
@@ -92,11 +92,11 @@
           <div class="field-grid">
             <label class="field">
               <span>付款方式</span>
-              <input id="paymentMethod" type="text" placeholder="例如：先款后货 / 月结 30 天" />
+              <input id="paymentMethod" type="text" placeholder="例如：先款后货 / 月结 30 天">
             </label>
             <label class="field">
               <span>交货方式</span>
-              <input id="deliveryMethod" type="text" placeholder="例如：送货上门 / 自提" />
+              <input id="deliveryMethod" type="text" placeholder="例如：送货上门 / 自提">
             </label>
           </div>
         </div>
@@ -125,7 +125,7 @@
             </label>
             <label class="field tax-custom">
               <span>手动税率（%）</span>
-              <input id="taxRateCustom" type="number" min="0" step="0.01" value="13" />
+              <input id="taxRateCustom" type="number" min="0" step="0.01" value="13">
             </label>
           </div>
         </div>
@@ -135,13 +135,13 @@
           <div class="seal-row">
             <label class="file-btn btn secondary">
               上传公司印章（PNG）
-              <input id="sealFile" type="file" accept="image/png" />
+              <input id="sealFile" type="file" accept="image/png">
             </label>
             <button id="clearSealBtn" class="btn ghost" type="button">清除印章</button>
           </div>
           <div class="seal-preview-card">
             <div class="seal-preview-label">印章预览</div>
-            <img id="sealPreview" class="seal-preview" alt="印章预览" />
+            <img id="sealPreview" class="seal-preview" alt="印章预览">
             <div id="sealPreviewEmpty" class="seal-preview-empty">未上传印章</div>
           </div>
         </div>
@@ -193,9 +193,9 @@
         <div class="template-actions">
           <label class="file-btn btn secondary">
             上传模板文件（HTML 片段）
-            <input id="templateFile" type="file" accept=".html,.txt" />
+            <input id="templateFile" type="file" accept=".html,.txt">
           </label>
-          <button id="restoreTemplateBtn" class="btn ghost" type="button">恢复内置模板</button>
+          <button id="restoreTemplateBtn" class="btn ghost" type="button">恢复默认模板</button>
           <button id="saveTemplateBtn" class="btn primary" type="button">保存当前模板</button>
         </div>
 
@@ -237,12 +237,12 @@
 
   <template id="rowTemplate">
     <tr class="item-row">
-      <td><input class="item-product" type="text" placeholder="例如：A4 打印纸" /></td>
-      <td><input class="item-qty" type="number" min="0" step="1" value="1" /></td>
-      <td><input class="item-unit" type="text" placeholder="箱" /></td>
-      <td><input class="item-price" type="number" min="0" step="0.01" value="0" /></td>
+      <td><input class="item-product" type="text" placeholder="例如：A4 打印纸"></td>
+      <td><input class="item-qty" type="number" min="0" step="1" value="1"></td>
+      <td><input class="item-unit" type="text" placeholder="个"></td>
+      <td><input class="item-price" type="number" min="0" step="0.01" value="0"></td>
       <td><output class="item-subtotal">0.00</output></td>
-      <td><input class="item-remark" type="text" placeholder="可选" /></td>
+      <td><input class="item-remark" type="text" placeholder="可选"></td>
       <td><button class="remove-row" type="button">删除</button></td>
     </tr>
   </template>

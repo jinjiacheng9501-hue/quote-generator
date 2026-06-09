@@ -1,7 +1,7 @@
-const STORAGE_KEYS = {
-  form: "quote-generator-form-v4",
-  template: "quote-generator-template-v4",
-  seal: "quote-generator-seal-v4",
+﻿const STORAGE_KEYS = {
+  form: 'quote-generator-form-v5',
+  template: 'quote-generator-template-v5',
+  seal: 'quote-generator-seal-v5',
 };
 
 const defaultTemplate = `
@@ -94,52 +94,59 @@ const defaultTemplate = `
 </div>`;
 
 const els = {
-  customerName: document.getElementById("customerName"),
-  customerContact: document.getElementById("customerContact"),
-  customerPhone: document.getElementById("customerPhone"),
-  customerAddress: document.getElementById("customerAddress"),
-  quoteDate: document.getElementById("quoteDate"),
-  deliveryDate: document.getElementById("deliveryDate"),
-  validityPeriod: document.getElementById("validityPeriod"),
-  supplierName: document.getElementById("supplierName"),
-  supplierContact: document.getElementById("supplierContact"),
-  supplierPhone: document.getElementById("supplierPhone"),
-  supplierAddress: document.getElementById("supplierAddress"),
-  paymentMethod: document.getElementById("paymentMethod"),
-  deliveryMethod: document.getElementById("deliveryMethod"),
-  remarks: document.getElementById("remarks"),
-  taxRatePreset: document.getElementById("taxRatePreset"),
-  taxRateCustom: document.getElementById("taxRateCustom"),
-  sealFile: document.getElementById("sealFile"),
-  clearSealBtn: document.getElementById("clearSealBtn"),
-  sealPreview: document.getElementById("sealPreview"),
-  sealPreviewEmpty: document.getElementById("sealPreviewEmpty"),
-  itemsBody: document.getElementById("itemsBody"),
-  addRowBtn: document.getElementById("addRowBtn"),
-  generateBtn: document.getElementById("generateBtn"),
-  printBtn: document.getElementById("printBtn"),
-  pretaxTotal: document.getElementById("pretaxTotal"),
-  grandTotal: document.getElementById("grandTotal"),
-  templateEditor: document.getElementById("templateEditor"),
-  templateFile: document.getElementById("templateFile"),
-  restoreTemplateBtn: document.getElementById("restoreTemplateBtn"),
-  saveTemplateBtn: document.getElementById("saveTemplateBtn"),
-  quotePreview: document.getElementById("quotePreview"),
-  rowTemplate: document.getElementById("rowTemplate"),
+  customerName: document.getElementById('customerName'),
+  customerContact: document.getElementById('customerContact'),
+  customerPhone: document.getElementById('customerPhone'),
+  customerAddress: document.getElementById('customerAddress'),
+  quoteDate: document.getElementById('quoteDate'),
+  deliveryDate: document.getElementById('deliveryDate'),
+  validityPeriod: document.getElementById('validityPeriod'),
+  supplierName: document.getElementById('supplierName'),
+  supplierContact: document.getElementById('supplierContact'),
+  supplierPhone: document.getElementById('supplierPhone'),
+  supplierAddress: document.getElementById('supplierAddress'),
+  paymentMethod: document.getElementById('paymentMethod'),
+  deliveryMethod: document.getElementById('deliveryMethod'),
+  remarks: document.getElementById('remarks'),
+  taxRatePreset: document.getElementById('taxRatePreset'),
+  taxRateCustom: document.getElementById('taxRateCustom'),
+  sealFile: document.getElementById('sealFile'),
+  clearSealBtn: document.getElementById('clearSealBtn'),
+  sealPreview: document.getElementById('sealPreview'),
+  sealPreviewEmpty: document.getElementById('sealPreviewEmpty'),
+  itemsBody: document.getElementById('itemsBody'),
+  addRowBtn: document.getElementById('addRowBtn'),
+  generateBtn: document.getElementById('generateBtn'),
+  printBtn: document.getElementById('printBtn'),
+  pretaxTotal: document.getElementById('pretaxTotal'),
+  grandTotal: document.getElementById('grandTotal'),
+  templateEditor: document.getElementById('templateEditor'),
+  templateFile: document.getElementById('templateFile'),
+  restoreTemplateBtn: document.getElementById('restoreTemplateBtn'),
+  saveTemplateBtn: document.getElementById('saveTemplateBtn'),
+  quotePreview: document.getElementById('quotePreview'),
+  rowTemplate: document.getElementById('rowTemplate'),
 };
 
 const defaults = {
-  customerContact: "",
-  customerPhone: "",
-  customerAddress: "",
-  supplierName: "扬州博瑞克仪器仪表科技有限公司",
-  supplierContact: "金嘉诚",
-  supplierPhone: "13328132156",
-  supplierAddress: "江苏省扬州市宝应经济开发区金湾路220号",
-  paymentMethod: "请联系确认",
-  deliveryMethod: "请联系确认",
-  validityPeriod: "报价有效期 7 天",
+  customerContact: '',
+  customerPhone: '',
+  customerAddress: '',
+  supplierName: '上海某某某科技有限公司',
+  supplierContact: '张经理',
+  supplierPhone: '1380000000',
+  supplierAddress: '上海浦东新区',
+  paymentMethod: '请联系确认',
+  deliveryMethod: '请联系确认',
+  validityPeriod: '报价有效期 7 天',
 };
+
+const blockedSupplierValues = new Set([
+  '扬州博瑞克仪器仪表科技有限公司',
+  '金嘉诚',
+  '13328132156',
+  '江苏省扬州市宝应经济开发区金湾路220号',
+]);
 
 function todayISO() {
   return new Date().toISOString().slice(0, 10);
@@ -147,20 +154,20 @@ function todayISO() {
 
 function formatCurrency(value) {
   const number = Number.isFinite(value) ? value : 0;
-  return new Intl.NumberFormat("zh-CN", {
-    style: "currency",
-    currency: "CNY",
+  return new Intl.NumberFormat('zh-CN', {
+    style: 'currency',
+    currency: 'CNY',
     minimumFractionDigits: 2,
   }).format(number);
 }
 
 function escapeHtml(value) {
-  return String(value ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
 }
 
 function toNumber(value) {
@@ -168,8 +175,8 @@ function toNumber(value) {
   return Number.isFinite(n) ? n : 0;
 }
 
-function cleanText(value, fallback = "—") {
-  const text = String(value ?? "").trim();
+function cleanText(value, fallback = '—') {
+  const text = String(value ?? '').trim();
   return text ? escapeHtml(text) : fallback;
 }
 
@@ -179,7 +186,7 @@ function calculateLineTotal(qty, unitPrice) {
 
 function getTaxRateValue() {
   const preset = els.taxRatePreset.value;
-  if (preset === "custom") return Math.max(0, toNumber(els.taxRateCustom.value) / 100);
+  if (preset === 'custom') return Math.max(0, toNumber(els.taxRateCustom.value) / 100);
   return Math.max(0, toNumber(preset));
 }
 
@@ -189,25 +196,25 @@ function getTaxRateText(rateValue) {
 
 function getQuoteTitle() {
   const customer = els.customerName.value.trim();
-  return customer ? `${customer}报价单` : "报价单";
+  return customer ? `${customer}报价单` : '报价单';
 }
 
 function createRow(data = {}) {
   const fragment = els.rowTemplate.content.cloneNode(true);
-  const row = fragment.querySelector("tr");
-  const product = fragment.querySelector(".item-product");
-  const qty = fragment.querySelector(".item-qty");
-  const unit = fragment.querySelector(".item-unit");
-  const price = fragment.querySelector(".item-price");
-  const subtotal = fragment.querySelector(".item-subtotal");
-  const remark = fragment.querySelector(".item-remark");
-  const removeBtn = fragment.querySelector(".remove-row");
+  const row = fragment.querySelector('tr');
+  const product = fragment.querySelector('.item-product');
+  const qty = fragment.querySelector('.item-qty');
+  const unit = fragment.querySelector('.item-unit');
+  const price = fragment.querySelector('.item-price');
+  const subtotal = fragment.querySelector('.item-subtotal');
+  const remark = fragment.querySelector('.item-remark');
+  const removeBtn = fragment.querySelector('.remove-row');
 
-  product.value = data.productName ?? "";
+  product.value = data.productName ?? '';
   qty.value = data.quantity ?? 1;
-  unit.value = data.unit ?? "个";
+  unit.value = data.unit ?? '个';
   price.value = data.unitPrice ?? 0;
-  remark.value = data.remark ?? "";
+  remark.value = data.remark ?? '';
   subtotal.textContent = formatCurrency(calculateLineTotal(qty.value, price.value));
 
   const recalc = () => {
@@ -216,15 +223,15 @@ function createRow(data = {}) {
     saveFormState();
   };
 
-  product.addEventListener("input", recalc);
-  qty.addEventListener("input", recalc);
-  unit.addEventListener("input", saveFormState);
-  price.addEventListener("input", recalc);
-  remark.addEventListener("input", saveFormState);
+  product.addEventListener('input', recalc);
+  qty.addEventListener('input', recalc);
+  unit.addEventListener('input', saveFormState);
+  price.addEventListener('input', recalc);
+  remark.addEventListener('input', saveFormState);
 
-  removeBtn.addEventListener("click", () => {
+  removeBtn.addEventListener('click', () => {
     row.remove();
-    if (!els.itemsBody.querySelector(".item-row")) {
+    if (!els.itemsBody.querySelector('.item-row')) {
       els.itemsBody.appendChild(createRow());
     }
     updateTotals();
@@ -235,12 +242,12 @@ function createRow(data = {}) {
 }
 
 function getRowsData() {
-  return [...els.itemsBody.querySelectorAll(".item-row")].map((row) => {
-    const productName = row.querySelector(".item-product").value.trim();
-    const quantity = toNumber(row.querySelector(".item-qty").value);
-    const unit = row.querySelector(".item-unit").value.trim();
-    const unitPrice = toNumber(row.querySelector(".item-price").value);
-    const remark = row.querySelector(".item-remark").value.trim();
+  return [...els.itemsBody.querySelectorAll('.item-row')].map((row) => {
+    const productName = row.querySelector('.item-product').value.trim();
+    const quantity = toNumber(row.querySelector('.item-qty').value);
+    const unit = row.querySelector('.item-unit').value.trim();
+    const unitPrice = toNumber(row.querySelector('.item-price').value);
+    const remark = row.querySelector('.item-remark').value.trim();
     return {
       productName,
       quantity,
@@ -254,7 +261,7 @@ function getRowsData() {
 
 function getSealHtml() {
   const src = localStorage.getItem(STORAGE_KEYS.seal);
-  if (!src) return "";
+  if (!src) return '';
   return `<img class="seal-image" src="${src}" alt="公司印章" />`;
 }
 
@@ -262,12 +269,12 @@ function updateSealPreview() {
   const src = localStorage.getItem(STORAGE_KEYS.seal);
   if (src) {
     els.sealPreview.src = src;
-    els.sealPreview.style.display = "block";
-    els.sealPreviewEmpty.style.display = "none";
+    els.sealPreview.style.display = 'block';
+    els.sealPreviewEmpty.style.display = 'none';
   } else {
-    els.sealPreview.removeAttribute("src");
-    els.sealPreview.style.display = "none";
-    els.sealPreviewEmpty.style.display = "block";
+    els.sealPreview.removeAttribute('src');
+    els.sealPreview.style.display = 'none';
+    els.sealPreviewEmpty.style.display = 'block';
   }
 }
 
@@ -290,7 +297,7 @@ function updateTotals() {
 
 function buildTableRows(rows) {
   if (!rows.length) {
-    return `<tr><td class="row-empty" colspan="7">暂无产品</td></tr>`;
+    return '<tr><td class="row-empty" colspan="7">暂无产品</td></tr>';
   }
 
   return rows
@@ -299,42 +306,42 @@ function buildTableRows(rows) {
         <tr>
           <td>${index + 1}</td>
           <td>${cleanText(item.productName)}</td>
-          <td class="num">${Number.isFinite(item.quantity) ? item.quantity.toFixed(0) : "0"}</td>
-          <td>${cleanText(item.unit, "个")}</td>
+          <td class="num">${Number.isFinite(item.quantity) ? item.quantity.toFixed(0) : '0'}</td>
+          <td>${cleanText(item.unit, '个')}</td>
           <td class="num">${formatCurrency(item.unitPrice)}</td>
           <td class="num">${formatCurrency(item.subtotal)}</td>
-          <td>${cleanText(item.remark, "—")}</td>
+          <td>${cleanText(item.remark, '—')}</td>
         </tr>
       `
     )
-    .join("");
+    .join('');
 }
 
 function fillTemplate(template, data) {
   return template
-    .replaceAll("{{quoteTitle}}", cleanText(data.quoteTitle, "报价单"))
-    .replaceAll("{{quoteDate}}", cleanText(data.quoteDate))
-    .replaceAll("{{customerName}}", cleanText(data.customerName, "未填写"))
-    .replaceAll("{{customerContact}}", cleanText(data.customerContact, "—"))
-    .replaceAll("{{customerPhone}}", cleanText(data.customerPhone, "—"))
-    .replaceAll("{{customerAddress}}", cleanText(data.customerAddress, "—"))
-    .replaceAll("{{supplierName}}", cleanText(data.supplierName))
-    .replaceAll("{{supplierContact}}", cleanText(data.supplierContact))
-    .replaceAll("{{supplierPhone}}", cleanText(data.supplierPhone))
-    .replaceAll("{{supplierAddress}}", cleanText(data.supplierAddress))
-    .replaceAll("{{deliveryDate}}", cleanText(data.deliveryDate, "未填写"))
-    .replaceAll("{{paymentMethod}}", cleanText(data.paymentMethod, "—"))
-    .replaceAll("{{validityPeriod}}", cleanText(data.validityPeriod, "—"))
-    .replaceAll("{{deliveryMethod}}", cleanText(data.deliveryMethod, "—"))
-    .replaceAll("{{remarks}}", cleanText(data.remarks, "无"))
-    .replaceAll("{{generatedAt}}", cleanText(data.generatedAt, "—"))
-    .replaceAll("{{tableRows}}", data.tableRows)
-    .replaceAll("{{pretaxTotal}}", cleanText(data.pretaxTotal, "¥0.00"))
-    .replaceAll("{{taxRate}}", cleanText(data.taxRate, "0%"))
-    .replaceAll("{{taxRateText}}", cleanText(data.taxRateText, "0%"))
-    .replaceAll("{{taxAmount}}", cleanText(data.taxAmount, "¥0.00"))
-    .replaceAll("{{grandTotal}}", cleanText(data.grandTotal, "¥0.00"))
-    .replaceAll("{{sealHtml}}", data.sealHtml || "");
+    .replaceAll('{{quoteTitle}}', cleanText(data.quoteTitle, '报价单'))
+    .replaceAll('{{quoteDate}}', cleanText(data.quoteDate))
+    .replaceAll('{{customerName}}', cleanText(data.customerName, '未填写'))
+    .replaceAll('{{customerContact}}', cleanText(data.customerContact, '—'))
+    .replaceAll('{{customerPhone}}', cleanText(data.customerPhone, '—'))
+    .replaceAll('{{customerAddress}}', cleanText(data.customerAddress, '—'))
+    .replaceAll('{{supplierName}}', cleanText(data.supplierName))
+    .replaceAll('{{supplierContact}}', cleanText(data.supplierContact))
+    .replaceAll('{{supplierPhone}}', cleanText(data.supplierPhone))
+    .replaceAll('{{supplierAddress}}', cleanText(data.supplierAddress))
+    .replaceAll('{{deliveryDate}}', cleanText(data.deliveryDate, '未填写'))
+    .replaceAll('{{paymentMethod}}', cleanText(data.paymentMethod, '—'))
+    .replaceAll('{{validityPeriod}}', cleanText(data.validityPeriod, '—'))
+    .replaceAll('{{deliveryMethod}}', cleanText(data.deliveryMethod, '—'))
+    .replaceAll('{{remarks}}', cleanText(data.remarks, '无'))
+    .replaceAll('{{generatedAt}}', cleanText(data.generatedAt, '—'))
+    .replaceAll('{{tableRows}}', data.tableRows)
+    .replaceAll('{{pretaxTotal}}', cleanText(data.pretaxTotal, '¥0.00'))
+    .replaceAll('{{taxRate}}', cleanText(data.taxRate, '0%'))
+    .replaceAll('{{taxRateText}}', cleanText(data.taxRateText, '0%'))
+    .replaceAll('{{taxAmount}}', cleanText(data.taxAmount, '¥0.00'))
+    .replaceAll('{{grandTotal}}', cleanText(data.grandTotal, '¥0.00'))
+    .replaceAll('{{sealHtml}}', data.sealHtml || '');
 }
 
 function getFormState() {
@@ -362,12 +369,12 @@ function getFormState() {
     taxRateText,
     taxAmount: formatCurrency(summary.taxAmount),
     grandTotal: formatCurrency(summary.grandTotal),
-    generatedAt: new Date().toLocaleString("zh-CN", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
+    generatedAt: new Date().toLocaleString('zh-CN', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
     }),
     sealHtml: getSealHtml(),
   };
@@ -384,6 +391,13 @@ function renderQuote() {
   updateTotals();
   updateSealPreview();
   saveFormState();
+}
+
+function sanitizeSupplier(value, fallback) {
+  const text = String(value ?? '').trim();
+  if (!text) return fallback;
+  if (blockedSupplierValues.has(text)) return fallback;
+  return text;
 }
 
 function saveFormState() {
@@ -415,23 +429,23 @@ function loadFormState() {
 
   try {
     const state = JSON.parse(raw);
-    els.customerName.value = state.customerName || "";
-    els.customerContact.value = state.customerContact || "";
-    els.customerPhone.value = state.customerPhone || "";
-    els.customerAddress.value = state.customerAddress || "";
+    els.customerName.value = state.customerName || '';
+    els.customerContact.value = state.customerContact || '';
+    els.customerPhone.value = state.customerPhone || '';
+    els.customerAddress.value = state.customerAddress || '';
     els.quoteDate.value = state.quoteDate || todayISO();
     els.deliveryDate.value = state.deliveryDate || todayISO();
     els.validityPeriod.value = state.validityPeriod || defaults.validityPeriod;
-    els.supplierName.value = state.supplierName || defaults.supplierName;
-    els.supplierContact.value = state.supplierContact || defaults.supplierContact;
-    els.supplierPhone.value = state.supplierPhone || defaults.supplierPhone;
-    els.supplierAddress.value = state.supplierAddress || defaults.supplierAddress;
+    els.supplierName.value = sanitizeSupplier(state.supplierName, defaults.supplierName);
+    els.supplierContact.value = sanitizeSupplier(state.supplierContact, defaults.supplierContact);
+    els.supplierPhone.value = sanitizeSupplier(state.supplierPhone, defaults.supplierPhone);
+    els.supplierAddress.value = sanitizeSupplier(state.supplierAddress, defaults.supplierAddress);
     els.paymentMethod.value = state.paymentMethod || defaults.paymentMethod;
     els.deliveryMethod.value = state.deliveryMethod || defaults.deliveryMethod;
-    els.remarks.value = state.remarks || "";
-    els.taxRatePreset.value = state.taxRatePreset || "0.13";
-    els.taxRateCustom.value = state.taxRateCustom || "13";
-    els.itemsBody.innerHTML = "";
+    els.remarks.value = state.remarks || '';
+    els.taxRatePreset.value = state.taxRatePreset || '0.13';
+    els.taxRateCustom.value = state.taxRateCustom || '13';
+    els.itemsBody.innerHTML = '';
     const rows = Array.isArray(state.rows) && state.rows.length ? state.rows : [{}];
     rows.forEach((row) => els.itemsBody.appendChild(createRow(row)));
     return true;
@@ -450,9 +464,9 @@ function loadTemplate() {
 }
 
 function applyTaxRateUi() {
-  const isCustom = els.taxRatePreset.value === "custom";
+  const isCustom = els.taxRatePreset.value === 'custom';
   els.taxRateCustom.disabled = !isCustom;
-  els.taxRateCustom.closest(".field").classList.toggle("is-disabled", !isCustom);
+  els.taxRateCustom.closest('.field').classList.toggle('is-disabled', !isCustom);
 }
 
 function attachFormListeners() {
@@ -473,19 +487,19 @@ function attachFormListeners() {
     els.remarks,
     els.taxRateCustom,
   ].forEach((el) => {
-    el.addEventListener("input", () => {
+    el.addEventListener('input', () => {
       saveFormState();
       updateTotals();
     });
   });
 
-  els.taxRatePreset.addEventListener("change", () => {
+  els.taxRatePreset.addEventListener('change', () => {
     applyTaxRateUi();
     saveFormState();
     updateTotals();
   });
 
-  els.templateEditor.addEventListener("input", saveTemplate);
+  els.templateEditor.addEventListener('input', saveTemplate);
 }
 
 function loadSeal() {
@@ -507,9 +521,9 @@ function init() {
     els.supplierAddress.value = defaults.supplierAddress;
     els.paymentMethod.value = defaults.paymentMethod;
     els.deliveryMethod.value = defaults.deliveryMethod;
-    els.taxRatePreset.value = "0.13";
-    els.taxRateCustom.value = "13";
-    els.itemsBody.appendChild(createRow({ quantity: 1, unit: "个", unitPrice: 0 }));
+    els.taxRatePreset.value = '0.13';
+    els.taxRateCustom.value = '13';
+    els.itemsBody.appendChild(createRow({ quantity: 1, unit: '个', unitPrice: 0 }));
   }
 
   attachFormListeners();
@@ -519,30 +533,30 @@ function init() {
   renderQuote();
 }
 
-els.addRowBtn.addEventListener("click", () => {
+els.addRowBtn.addEventListener('click', () => {
   els.itemsBody.appendChild(createRow());
   saveFormState();
 });
 
-els.generateBtn.addEventListener("click", renderQuote);
+els.generateBtn.addEventListener('click', renderQuote);
 
-els.printBtn.addEventListener("click", () => {
+els.printBtn.addEventListener('click', () => {
   renderQuote();
   window.print();
 });
 
-els.restoreTemplateBtn.addEventListener("click", () => {
+els.restoreTemplateBtn.addEventListener('click', () => {
   els.templateEditor.value = defaultTemplate;
   saveTemplate();
   renderQuote();
 });
 
-els.saveTemplateBtn.addEventListener("click", () => {
+els.saveTemplateBtn.addEventListener('click', () => {
   saveTemplate();
   renderQuote();
 });
 
-els.templateFile.addEventListener("change", async () => {
+els.templateFile.addEventListener('change', async () => {
   const file = els.templateFile.files?.[0];
   if (!file) return;
   const text = await file.text();
@@ -551,28 +565,29 @@ els.templateFile.addEventListener("change", async () => {
   renderQuote();
 });
 
-els.sealFile.addEventListener("change", async () => {
+els.sealFile.addEventListener('change', async () => {
   const file = els.sealFile.files?.[0];
   if (!file) return;
-  if (file.type !== "image/png") {
-    alert("请上传 PNG 格式的印章图片。");
-    els.sealFile.value = "";
+  if (file.type !== 'image/png') {
+    alert('请上传 PNG 格式的印章图片。');
+    els.sealFile.value = '';
     return;
   }
   const reader = new FileReader();
   reader.onload = () => {
-    localStorage.setItem(STORAGE_KEYS.seal, String(reader.result || ""));
+    localStorage.setItem(STORAGE_KEYS.seal, String(reader.result || ''));
     updateSealPreview();
     renderQuote();
   };
   reader.readAsDataURL(file);
 });
 
-els.clearSealBtn.addEventListener("click", () => {
+els.clearSealBtn.addEventListener('click', () => {
   localStorage.removeItem(STORAGE_KEYS.seal);
-  els.sealFile.value = "";
+  els.sealFile.value = '';
   updateSealPreview();
   renderQuote();
 });
 
 init();
+
