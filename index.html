@@ -1,0 +1,252 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>网页报价单生成器</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">本地离线可用</p>
+        <h1>网页报价单生成器</h1>
+        <p class="hero-copy">
+          适合编程小白的简洁版本：填写客户、供货方、产品和印章信息，自动计算税额与总金额，一键生成可打印报价单。
+        </p>
+      </div>
+      <div class="hero-card">
+        <div>
+          <span>使用方式</span>
+          <strong>填写表单 → 生成报价单 → 打印 / 导出 PDF</strong>
+        </div>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="panel form-panel">
+        <div class="panel-head">
+          <h2>1. 填写信息</h2>
+          <p>支持客户信息、供货方信息、税率、电子印章和多行产品明细。</p>
+        </div>
+
+        <div class="section-block">
+          <div class="section-title">客户信息</div>
+          <div class="field-grid">
+            <label class="field">
+              <span>客户名称</span>
+              <input id="customerName" type="text" placeholder="例如：上海金晶科技有限公司">
+            </label>
+            <label class="field">
+              <span>客户联系人</span>
+              <input id="customerContact" type="text" placeholder="例如：李经理">
+            </label>
+            <label class="field">
+              <span>客户联系电话</span>
+              <input id="customerPhone" type="text" placeholder="例如：13900000000">
+            </label>
+            <label class="field">
+              <span>客户地址</span>
+              <input id="customerAddress" type="text" placeholder="例如：上海市浦东新区...">
+            </label>
+            <label class="field">
+              <span>报价日期</span>
+              <input id="quoteDate" type="date">
+            </label>
+            <label class="field">
+              <span>供货日期</span>
+              <input id="deliveryDate" type="date">
+            </label>
+            <label class="field">
+              <span>报价有效期</span>
+              <input id="validityPeriod" type="text" placeholder="例如：报价有效期 7 天">
+            </label>
+          </div>
+        </div>
+
+        <div class="section-block">
+          <div class="section-title">供货方信息</div>
+          <div class="field-grid">
+            <label class="field">
+              <span>供货方公司名称</span>
+              <input id="supplierName" type="text" placeholder="例如：上海某某某科技有限公司">
+            </label>
+            <label class="field">
+              <span>联系人</span>
+              <input id="supplierContact" type="text" placeholder="例如：张经理">
+            </label>
+            <label class="field">
+              <span>联系电话</span>
+              <input id="supplierPhone" type="text" placeholder="例如：1380000000">
+            </label>
+            <label class="field">
+              <span>地址</span>
+              <input id="supplierAddress" type="text" placeholder="例如：上海浦东新区">
+            </label>
+          </div>
+        </div>
+
+        <div class="section-block">
+          <div class="section-title">商业条款</div>
+          <div class="field-grid">
+            <label class="field">
+              <span>付款方式</span>
+              <input id="paymentMethod" type="text" placeholder="例如：先款后货 / 月结 30 天">
+            </label>
+            <label class="field">
+              <span>交货方式</span>
+              <input id="deliveryMethod" type="text" placeholder="例如：送货上门 / 自提">
+            </label>
+          </div>
+        </div>
+
+        <div class="section-block">
+          <div class="section-title">备注条款</div>
+          <label class="field">
+            <span>备注</span>
+            <textarea id="remarks" rows="3" placeholder="例如：含税含运费，30天内有效"></textarea>
+          </label>
+        </div>
+
+        <div class="section-block">
+          <div class="section-title">税率设置</div>
+          <div class="tax-row">
+            <label class="field tax-select">
+              <span>税率选项</span>
+              <select id="taxRatePreset">
+                <option value="0">0%</option>
+                <option value="0.03">3%</option>
+                <option value="0.06">6%</option>
+                <option value="0.09">9%</option>
+                <option value="0.13">13%</option>
+                <option value="custom">自定义</option>
+              </select>
+            </label>
+            <label class="field tax-custom">
+              <span>手动税率（%）</span>
+              <input id="taxRateCustom" type="number" min="0" step="0.01" value="13">
+            </label>
+          </div>
+        </div>
+
+        <div class="section-block">
+          <div class="section-title">电子印章</div>
+          <div class="seal-row">
+            <label class="file-btn btn secondary">
+              上传公司印章（PNG）
+              <input id="sealFile" type="file" accept="image/png">
+            </label>
+            <button id="clearSealBtn" class="btn ghost" type="button">清除印章</button>
+          </div>
+          <div class="seal-preview-card">
+            <div class="seal-preview-label">印章预览</div>
+            <img id="sealPreview" class="seal-preview" alt="印章预览">
+            <div id="sealPreviewEmpty" class="seal-preview-empty">未上传印章</div>
+          </div>
+        </div>
+
+        <div class="section-block">
+          <div class="section-title">产品明细</div>
+          <div class="table-wrap">
+            <table class="input-table">
+              <thead>
+                <tr>
+                  <th>产品名称</th>
+                  <th class="col-small">数量</th>
+                  <th class="col-small">单位</th>
+                  <th class="col-small">单价（含税）</th>
+                  <th class="col-small">含税金额</th>
+                  <th class="col-remark">备注</th>
+                  <th class="col-actions">操作</th>
+                </tr>
+              </thead>
+              <tbody id="itemsBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <button id="addRowBtn" class="btn secondary" type="button">+ 添加一行产品</button>
+          <button id="generateBtn" class="btn primary" type="button">一键生成报价单</button>
+          <button id="printBtn" class="btn ghost" type="button">打印 / 导出 PDF</button>
+        </div>
+
+        <div class="total-bar">
+          <div>
+            <span>未税金额</span>
+            <strong id="pretaxTotal">¥0.00</strong>
+          </div>
+          <div>
+            <span>含税总金额</span>
+            <strong id="grandTotal">¥0.00</strong>
+          </div>
+        </div>
+      </section>
+
+      <aside class="panel template-panel">
+        <div class="panel-head">
+          <h2>2. 模板</h2>
+          <p>内置模板可以直接用，也可以上传你自己的 HTML 片段。</p>
+        </div>
+
+        <div class="template-actions">
+          <label class="file-btn btn secondary">
+            上传模板文件（HTML 片段）
+            <input id="templateFile" type="file" accept=".html,.txt">
+          </label>
+          <button id="restoreTemplateBtn" class="btn ghost" type="button">恢复默认模板</button>
+          <button id="saveTemplateBtn" class="btn primary" type="button">保存当前模板</button>
+        </div>
+
+        <label class="field">
+          <span>模板内容（HTML 片段）</span>
+          <textarea id="templateEditor" rows="24" spellcheck="false"></textarea>
+        </label>
+
+        <div class="hint">
+          <p><strong>可用占位符：</strong></p>
+          <p>
+            <code>{{quoteTitle}}</code> <code>{{quoteDate}}</code> <code>{{customerName}}</code>
+            <code>{{customerContact}}</code> <code>{{customerPhone}}</code> <code>{{customerAddress}}</code>
+            <code>{{supplierName}}</code> <code>{{supplierContact}}</code> <code>{{supplierPhone}}</code>
+            <code>{{supplierAddress}}</code> <code>{{deliveryDate}}</code> <code>{{paymentMethod}}</code>
+            <code>{{validityPeriod}}</code> <code>{{deliveryMethod}}</code> <code>{{remarks}}</code>
+            <code>{{tableRows}}</code> <code>{{pretaxTotal}}</code> <code>{{taxRate}}</code>
+            <code>{{taxRateText}}</code> <code>{{taxAmount}}</code> <code>{{grandTotal}}</code>
+            <code>{{generatedAt}}</code> <code>{{sealHtml}}</code>
+          </p>
+        </div>
+      </aside>
+    </main>
+
+    <section class="panel preview-panel">
+      <div class="panel-head">
+        <h2>3. 报价单预览</h2>
+        <p>点击“一键生成报价单”后，这里会显示可打印页面。</p>
+      </div>
+
+      <div id="quotePreview" class="quote-preview">
+        <div class="preview-empty">
+          <h3>还没有生成报价单</h3>
+          <p>先填写上面的信息，再点击“一键生成报价单”。</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <template id="rowTemplate">
+    <tr class="item-row">
+      <td><input class="item-product" type="text" placeholder="例如：A4 打印纸"></td>
+      <td><input class="item-qty" type="number" min="0" step="1" value="1"></td>
+      <td><input class="item-unit" type="text" placeholder="个"></td>
+      <td><input class="item-price" type="number" min="0" step="0.01" value="0"></td>
+      <td><output class="item-subtotal">0.00</output></td>
+      <td><input class="item-remark" type="text" placeholder="可选"></td>
+      <td><button class="remove-row" type="button">删除</button></td>
+    </tr>
+  </template>
+
+  <script src="./app.js"></script>
+</body>
+</html>
